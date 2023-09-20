@@ -7,8 +7,8 @@ class DeliveryDetail extends StatelessWidget {
       {super.key,
       required this.header,
       required this.address,
-      required this.location});
-
+      required this.location, });
+   
   final String header;
   final String address;
   final String location;
@@ -18,7 +18,7 @@ class DeliveryDetail extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Divider(
+        const Divider(
           thickness: 1,
           color: Colors.black,
         ),
@@ -29,34 +29,29 @@ class DeliveryDetail extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .titleMedium!
-                .copyWith(color: driverColor , fontWeight: FontWeight.bold),
+                .copyWith(color: driverColor.withOpacity(0.5), fontWeight: FontWeight.bold),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 4,
         ),
         Padding(
           padding: const EdgeInsets.only(left: 6),
-          child: Text(
-            address,
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium!.copyWith(fontWeight: FontWeight.bold)
-                 
-          ),
+          child: Text(address,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(fontWeight: FontWeight.bold)),
         ),
-        
+        const SizedBox(height: 1,),
         Padding(
           padding: const EdgeInsets.only(left: 6),
-          child: Text(
-            location,
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium!.copyWith(fontWeight: FontWeight.bold)
-                 
-          ),
+          child: Text(location,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(fontWeight: FontWeight.bold)),
         ),
-         
       ],
     );
   }

@@ -1,14 +1,13 @@
+import 'package:driver/backend/urls_from_data.dart';
 import 'package:driver/data/color_and_placeholder.dart';
 import 'package:driver/screen/delivery_details.dart';
 import 'package:driver/widget/result_detail.dart';
 import 'package:flutter/material.dart';
 
 class DeliveriesListBox extends StatefulWidget {
-  DeliveriesListBox(
-      {super.key, required this.townName, required this.count});
+  DeliveriesListBox({super.key, required this.townName, required this.count});
   final String townName;
   final String count;
-   
 
   @override
   State<DeliveriesListBox> createState() => _DeliveriesListBoxState();
@@ -16,16 +15,26 @@ class DeliveriesListBox extends StatefulWidget {
 
 class _DeliveriesListBoxState extends State<DeliveriesListBox> {
   bool isOpen = false;
-   List<List<String>>? orderDetails;  
+  List<Map> listOfMapAddress = [];
 
-   @override
+  @override
   void initState() {
-    orderDetails = widget.townName == "Guntur" ? orderGunturDetails : widget.townName == 'Gorantla' ? orderGorantlaDetails : widget.townName == 'Nallpadu' ? orderNallapaduDetails : widget.townName == 'Lam' ? orderLamDetails : widget.townName == 'LakshmiPuram' ? orderLakshmiPuramCancelled :[[]];
     super.initState();
   }
-  
+
+  void retrieveCities() async {
+    await retreiveCitieWiseOrders(widget.townName).then((value) {
+      setState(() {
+        listOfMapAddress = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (isOpen) {
+      retrieveCities();
+    }
     return Card(
       elevation: 4,
       surfaceTintColor: Colors.white,
@@ -44,14 +53,18 @@ class _DeliveriesListBoxState extends State<DeliveriesListBox> {
                   size: 30,
                 ),
                 GestureDetector(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (ctx) => ResultDetail(
-                        orderDetails:  orderDetails!,
-                        header: widget.townName,
+                  onTap: () {
+                    if(isOpen) {
+                      Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (ctx) => ResultDetail(
+                          orderDetails: listOfMapAddress,
+                          header: widget.townName,
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                    }
+                  },
                   child: Text(
                     widget.townName,
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
@@ -91,46 +104,21 @@ class _DeliveriesListBoxState extends State<DeliveriesListBox> {
           isOpen
               ? Column(
                   children: [
-                    if (widget.townName == "Guntur")
-                      ...orderGunturDetails.map(
-                        (item) => DeliveryDetail(
-                          header: item[0],
-                          address: item[1],
-                          location: item[2],
+                    if (listOfMapAddress.length != 0)
+                      ...listOfMapAddress.map(
+                        (e) => DeliveryDetail(
+                          header: e["OrderNo"],
+                          address: e["ConsigneeAddress"],
+                          location: e["Country"],
                         ),
-                      )
-                    else if (widget.townName == "Nallpadu")
-                      ...orderNallapaduDetails.map(
-                        (item) => DeliveryDetail(
-                          header: item[0],
-                          address: item[1],
-                          location: item[2],
-                        ),
-                      )
-                    else if (widget.townName == "Gorantla")
-                      ...orderGorantlaDetails.map(
-                        (item) => DeliveryDetail(
-                          header: item[0],
-                          address: item[1],
-                          location: item[2],
-                        ),
-                      )
-                    else if (widget.townName == "Lam")
-                      ...orderLamDetails.map(
-                        (item) => DeliveryDetail(
-                          header: item[0],
-                          address: item[1],
-                          location: item[2],
-                        ),
-                      )
-                    else if (widget.townName == "LakshmiPuram")
-                      ...orderLakshmiPuramCancelled.map(
-                        (item) => DeliveryDetail(
-                          header: item[0],
-                          address: item[1],
-                          location: item[2],
-                        ),
-                      )
+                      ),
+                    if (listOfMapAddress.length == 0)
+                      CircularProgressIndicator(
+                        color: driverColor,
+                      ),
+                    const SizedBox(
+                      height: 10,
+                    )
                   ],
                 )
               : const SizedBox(

@@ -4,7 +4,9 @@ import 'package:driver/screen/order_information_box.dart';
 import 'package:flutter/material.dart';
 
 class OrderInformation extends StatefulWidget {
-  const OrderInformation({super.key});
+  const OrderInformation({super.key, required this.details});
+
+  final Map details;
 
   @override
   State<OrderInformation> createState() => _OrderInformationState();
@@ -130,8 +132,8 @@ class _OrderInformationState extends State<OrderInformation> {
                 child: FilledButton(
                   style: ButtonStyle(
                       backgroundColor: _status.toString() != 'null'
-                          ? MaterialStatePropertyAll(Colors.green)
-                          : MaterialStatePropertyAll(
+                          ?const  MaterialStatePropertyAll(Colors.green)
+                          : const MaterialStatePropertyAll(
                               Color.fromARGB(255, 138, 130, 130)),
                       shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)))),
@@ -165,12 +167,12 @@ class _OrderInformationState extends State<OrderInformation> {
               ),
             ),
             OrderInformationBox(
-                header: '#0B95872905817',
-                sender: "Demo Account",
-                invoiceNo: 123.toString(),
-                customerName: "Gs store",
-                payment: "Kuwait",
-                amount: 1000.toString()),
+                header: widget.details['OrderNo'].toString(),
+                sender: "Hello",
+                invoiceNo: widget.details['C_Order_ID'].toString(),
+                customerName: widget.details["CustomerName"].toString(),
+                payment: widget.details["PaymentMethod"].toString(),
+                amount: widget.details['OrderAmount'].toString()),
             const Divider(),
             const SizedBox(
               height: 10,
@@ -190,12 +192,12 @@ class _OrderInformationState extends State<OrderInformation> {
                 ],
               ),
             ),
-            const AddressInformationBox(
-              address: "Fhatimapuram",
-              city: "Guntur",
-              country: "India",
-              phone: "700000008",
-              notes: "Test Order",
+             AddressInformationBox(
+              address: widget.details['ConsigneeAddress'].toString(),
+              city: widget.details["ConsigneeCity"].toString(),
+              country: widget.details["Country"].toString(),
+              phone: "12345678",
+              notes: "XXXXXXXXX",
             )
           ],
         ),

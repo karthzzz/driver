@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class AddressInformationBox extends StatelessWidget {
   final String address;
@@ -23,7 +22,7 @@ class AddressInformationBox extends StatelessWidget {
         children: [
           Table(
             border:
-                TableBorder(horizontalInside: BorderSide(color: Colors.black)),
+                const TableBorder(horizontalInside: BorderSide(color: Colors.black)),
             children: [
               TableRow(children: [
                 Padding(

@@ -1,8 +1,7 @@
 import 'dart:math';
-
+import 'package:driver/backend/urls_from_data.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class LocationPin {
@@ -18,18 +17,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  LatLng randomLocation = _getRandomLocation();
+  // LatLng randomLocation = _getRandomLocation();
 
-  static LatLng _getRandomLocation() {
-    final random = Random();
-    final double lat = 16.3093 + random.nextDouble() * 0.05;
-    final double lng = 80.4365 + random.nextDouble() * 0.05;
-    return LatLng(lat, lng);
+  // static LatLng _getRandomLocation() {
+  //   final random = Random();
+  //   final double lat = 16.3093 + random.nextDouble() * 0.05;
+  //   final double lng = 80.4365 + random.nextDouble() * 0.05;
+  //   return LatLng(lat, lng);
+  // }
+  List<String> latLongId = [];
+
+  void getlatitudeAndLongitude() {
+    setState(() {
+      latLongId = retrieveLongAndLatitudes();
+    });
   }
 
   void trackLocation() {
     final mapsUrl =
-        'https://www.google.com/maps/dir/?api=1&destination=${randomLocation.latitude},${randomLocation.longitude}';
+        'https://www.google.com/maps/dir/?api=1&destination=${latLongId[0]},${latLongId[1]}';
     launchUrlString(mapsUrl);
   }
 
@@ -37,19 +43,19 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Location Tracking App'),
+        title: const Text('Location Tracking App'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Random Location: ${randomLocation.latitude}, ${randomLocation.longitude}',
+              'Random Location: ${latLongId[0]}, ${latLongId[1]}',
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: trackLocation,
-              child: Text('Track Location on Google Maps'),
+              child: const Text('Track Location on Google Maps'),
             ),
           ],
         ),

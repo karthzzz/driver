@@ -1,11 +1,10 @@
-import 'package:driver/data/color_and_placeholder.dart';
 import 'package:driver/screen/order_map_message_detail.dart';
 import 'package:flutter/material.dart';
 
 class ResultDetail extends StatelessWidget {
   const ResultDetail({super.key, required this.orderDetails, required this.header  });
 
-  final List<List<String>> orderDetails;
+  final List<Map> orderDetails;
   final String header;
 
 
@@ -57,11 +56,11 @@ class ResultDetail extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 4,
                 ),
                 Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.rectangle,
                     color: Color.fromARGB(156, 231, 223, 223),
                   ),
@@ -69,14 +68,14 @@ class ResultDetail extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 4,
                         ),
                         Text(orderDetails.length.toString()),
-                        SizedBox(
+                        const SizedBox(
                           width: 4,
                         ),
-                        Text('Result found'),
+                        const Text('Result found'),
                       ],
                     ),
                   ),
@@ -85,11 +84,12 @@ class ResultDetail extends StatelessWidget {
                 ...orderDetails.map((e) => Column(
                       children: [
                         OrderMapMessageDetail(
-                          header: e[0],
-                          address: e[1],
-                          location: e[2],
+                          details: e,
+                          header: e["OrderNo"],
+                          address: e["ConsigneeAddress"],
+                          location: e["Country"],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                       ],

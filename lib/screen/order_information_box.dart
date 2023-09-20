@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
- 
-
+  
 class OrderInformationBox extends StatelessWidget {
    
    final String header;
@@ -10,6 +8,7 @@ class OrderInformationBox extends StatelessWidget {
    final String customerName;
    final String payment;
    final String amount;
+   
 
   const OrderInformationBox({super.key, required this.header, required this.sender, required this.invoiceNo, required this.customerName, required this.payment, required this.amount});
   @override
